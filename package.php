@@ -4,243 +4,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home</title>
-
-
-    <!-- swiper css link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-
-
-
     <!-- font awesome cdn link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
    <!-- custom  css file -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
-    <!-- custom  js file -->
-    <script src="js/script.js" type="scripttype"></script>
-
     <link rel="stylesheet" href="styles.css?v=1.1">
-
-    <!-- shoping cart icon file -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
 </head>
 <body>
 <!-- header section starts -->  
-<section class="header">
-    <a href="home.php" class="logo">ExploreNest</a>
-    <nav class="navbar">
-        <a href="home.php">home</a>
-        <a href="about.php">about</a>
-        <a href="package.php">package</a>
-        <a href="book.php">book</a>
-        <li class="dropdown">
-            <a href="javascript:void(0)" class="dropbtn">custome package</a>
-            <div class="dropdown-content">
-                <a href="hotel.php">hotels</a>
-                <a href="flight.php">flights</a>
-                <a href="car_rental.php">car rental</a>
-                <a href="tour_guide.php">tour guide</a>
-                <a href="activity.php">activities</a>
-            </div>
-        </li>
-        <a href="#"><i class="fa fa-search"></i></a>
-        <a href="cart.php"><i class="fa fa-shopping-cart"></i></a>
-</section>
-<!-- header section ends -->    
-
+<?php include('design/header.php'); ?>
+<!-- header section ends -->  
 
 <div class="heading" style="background:url(pic/pic4.jpg) no-repeat"> 
     <h1> packages </h1>
     
 </div>
 
-<!-- packages section starts-->
-<section class="hotels">
-    <h1 class="heading-title"></h1>
-        <div class="box-container">
-            <div class="box">  
-                <div class="image">
-                    <img src="pic/pic10.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <p class="price">$150</p> <!-- Displaying the price -->
-                    <a href="book.php?price=150" class="btn">book now</a> 
-                </div>
-            </div>
+<!-- activity section starts --> 
+<?php
+  include 'DBconnect.php';
+  $sql = "SELECT * FROM premade a,package p where a.product_code=p.product_code";
+  $result = mysqli_query($connection, $sql);
+  while ($row = mysqli_fetch_assoc($result)):
+?>
 
-            <div class="box">
-                <div class="image">
-                    <img src="pic/pic11.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <a href="book.php" class="btn">book now</a>
-                </div>
-            </div>
-
-            <div class="box">
-                <div class="image">
-                    <img src="pic/pic12.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <a href="book.php" class="btn">book now</a>
-                </div>
-            </div>
-            
-            <div class="box">
-                <div class="image">
-                    <img src="pic/pic13.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <a href="book.php" class="btn">book now</a>
-                </div>
-            </div>
-
-            <div class="box">
-                <div class="image">
-                    <img src="pic/pic14.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <a href="book.php" class="btn">book now</a>
-                </div>
-            </div>
-
-            <div class="box">
-                <div class="image">
-                    <img src="pic/pic15.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <a href="book.php" class="btn">book now</a>
-                </div>
-            </div>
-
-            <div class="box">
-                <div class="image">
-                    <img src="pic/pic16.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <a href="book.php" class="btn">book now</a>
-                </div>
-            </div>
-
-            <div class="box">
-                <div class="image">
-                    <img src="pic/pic17.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <a href="book.php" class="btn">book now</a>
-                </div>
-            </div>
- 
-            <div class="box">
-                <div class="image">
-                    <img src="pic/pic21.jpg" alt=""> 
-                </div>
-                <div class="content">
-                    <h3>adventure & tour</h3> 
-                    <p>blah blah</p>
-                    <a href="book.php" class="btn">book now</a>
-                </div>
-            </div>
-
-        </div>
+<section class="activities">
+  <div class="box-container">
+    <div class="box">
+      <div class="image">
+        <img src="<?= $row['product_image'] ?>" alt=""> 
+      </div>
+      <div class="content">
+        <h3><?= $row['product_name'] ?></h3>
+        <h3><i class="fas fa-dollar-sign"></i><?= $row['product_price'] ?></h3>
+        <form action="" method="post" class="addItem">
+          <input type="hidden" name="pcode" value="<?= $row['product_code'] ?>">
+          <p>Check-In:</p>
+          <input type="date" name="arrival">
+          <h3><?= $row['loc'] ?></h3>
+          <h3><?= $row['nights'] ?><h3>Nights</h3></h3>
+          <input type="submit" value="Add to the cart" class="btn" name="addItem">
+        </form>
+      </div>
+    </div>
+  </div>
 </section>
-
-<!--packages section ends-->
-
-
+<?php endwhile; ?>
+<!-- activity section ends -->
 
 
 
+<!-- activity PHP section starts -->
+<?php
+require 'DBconnect.php';
+
+if (!$connection) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Add products into the cart table
+if (isset($_POST['addItem'])) {
+  $user_id = $_GET['id']; 
+  $pcode = $_POST['pcode'];
+  $arrival = $_POST['arrival'];
+  $flag = True;
+
+  $start_date = strtotime($arrival);
+  $dates_array = array();
 
 
+  $sql = "SELECT nights FROM premade WHERE product_code='$pcode'";
+  $result = mysqli_query($connection, $sql);
+  $row = mysqli_fetch_assoc($result);
+  $leaving = $row['nights'];
+
+  for ($i = 0; $i < $leaving; $i++) {
+    $dates_array[] = date("m-d-Y", $start_date);
+    $start_date = strtotime("+1 day", $start_date);
+  }
+
+  $sql = "SELECT slots FROM package WHERE product_code='$pcode'";
+  $result = mysqli_query($connection, $sql);
+
+  foreach ($dates_array as $i){
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $c=0;
+        if ($row['slots'] != "") {
+            // Handle slot availability 
+            $existing_slots = $row['slots'];
+            $slot_array = explode(',', $existing_slots);
+
+            foreach ($slot_array as $j) {
+                if ($j==$i) {
+                    $c++;
+                } 
+            }
+            if ($c >= 5) {
+                $flag = False;
+                break;
+            } 
+        }
+    }
+  } 
+
+    // If slot update was successful and there are available slots, add product to cart
+    if ($flag) {
+
+      $sql = "SELECT id FROM cart WHERE userID='$user_id'";
+      $result = mysqli_query($connection, $sql);
+      $row = mysqli_fetch_assoc($result);
+      $cart_id = $row['id'];
 
 
+      $sql = "SELECT product_code FROM added_to WHERE product_code='$pcode' and cartId='$cart_id'";
+      $result = mysqli_query($connection, $sql);
+      $slots = implode(',', $dates_array);
+      if (mysqli_num_rows($result) > 0) {
+        $user_id = htmlspecialchars($user_id); // Ensure user_id is properly sanitized
+        echo "<script>
+        alert('Already in the Cart!');
+        window.location.href = 'package.php?id=" . $user_id . "';
+        </script>";
+      } else {
+        if ($row['slots'] == "") {
+          // If no slots are set, update the slots column
+          $sql = "UPDATE package SET slots='$slots' WHERE product_code='$pcode'";
+          mysqli_query($connection, $sql);
+        }else {
+          // If slots are set, add the new slot date
+          $updated_slots = $row['slots'].',' .$slots;
+          $sql = "UPDATE package SET slots='$updated_slots' WHERE product_code='$pcode'";
+          mysqli_query($connection, $sql);
+        }
 
 
+        $sql = "INSERT INTO added_to (cartID,product_code) VALUES ('$cart_id','$pcode')";
+        $result = mysqli_query($connection, $sql);
+        echo "hbdchubcuh";
 
+        if ($result) {
+          echo "<script>
+          alert('Product added to the cart!');
+          window.location.href = 'package.php?id=" .$user_id . "';
+          </script>";
+        } else {
+          echo "<script>
+          alert('Error!');
+          window.location.href = 'package.php';
+          </script>";
+        }
+      }
+  } else {
+      echo "<script>
+      alert('Product not added due to slot availability!');
+      window.location.href = 'package.php?id=" . $user_id . "';
+      </script>";
+  }
+}
 
+mysqli_close($connection);  // Close the connection after done
+?>
 
-
-
-
-
-
-
-
-
+<!-- activity PHP section ends -->
+ 
 
 <!-- footer section starts-->
-<section class="footer">
-    <div class="box-container">
-
-        <div class="box">
-            <h3>quick links</h3>
-            <a href="home.php"><i class="fa fa-angle-right"></i>home</a>
-            <a href="about.php"><i class="fa fa-angle-right"></i>about</a>
-            <a href="package.php"><i class="fa fa-angle-right"></i>package</a>
-            <a href="book.php"><i class="fa fa-angle-right"></i>book</a>
-        </div>
-
-        <div class="box">
-            <h3>extra links</h3>
-            <a href="#"><i class="fa fa-angle-right"></i> ask questions</a>
-            <a href="#"><i class="fa fa-angle-right"></i> about us</a>
-            <a href="#"><i class="fa fa-angle-right"></i> privacy policy</a>
-            <a href="#"><i class="fa fa-angle-right"></i> terms of use</a>
-        </div>
-
-        <div class="box">
-            <h3>contact info</h3>
-            <a href="#"><i class="fa fa-phone"></i> *123-456-7890 </a>
-            <a href="#"><i class="fa fa-phone"></i> *111-222-3333 </a>
-            <a href="#"><i class="fa fa-envelope"></i> fayeezayousuf360@gmail.com </a>
-            <a href="#"><i class="fa fa-map"></i> dhaka, bangladesh - 1</a>
-        </div>
-
-        <div class="box">
-            <h3>follow us</h3>
-            <a href="#"> <i class="fab fa-facebook-f"></i> Facebook </a>
-            <a href="#"> <i class="fab fa-twitter"></i> twitter </a>
-            <a href="#"> <i class="fab fa-instagram"></i> Instagram </a>
-            <a href="#"> <i class="fab fa-linkedin"></i> LinkedIn</a>
-        </div>
-
-    </div>
-    
-    <div class="credit"> created by <span> nameeeeeeee </span> | all rights reserved!</div>
-
-</section>
+<?php include('design/footer.php'); ?>
 
 <!-- footer section ends-->
-
-
-
-
-
-
-<!-- swiper js link -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<!-- custom js file link -->
-<script src="js/script.js"></script>
 </body>
 </html>
