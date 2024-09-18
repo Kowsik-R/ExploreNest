@@ -14,15 +14,14 @@
             <a href="home.php"><i class="fa fa-angle-right"></i>home</a>
             <a href="about.php"><i class="fa fa-angle-right"></i>about</a>
             <a href="package.php"><i class="fa fa-angle-right"></i>package</a>
-            <a href="book.php"><i class="fa fa-angle-right"></i>book</a>
         </div>
 
         <div class="box">
             <h3>extra links</h3>
-            <a href="#"><i class="fa fa-angle-right"></i> ask questions</a>
-            <a href="#"><i class="fa fa-angle-right"></i> about us</a>
-            <a href="#"><i class="fa fa-angle-right"></i> privacy policy</a>
-            <a href="#"><i class="fa fa-angle-right"></i> terms of use</a>
+            <a href="about.php"><i class="fa fa-angle-right"></i> ask questions</a>
+            <a href="about.php"><i class="fa fa-angle-right"></i> about us</a>
+            <a href="about.php"><i class="fa fa-angle-right"></i> privacy policy</a>
+            <a href="about.php"><i class="fa fa-angle-right"></i> terms of use</a>
         </div>
 
         <div class="box">
@@ -43,7 +42,7 @@
 
     </div>
     
-    <div class="credit"> created by <span> nameeeeeeee </span> | all rights reserved!</div>
+    <div class="credit"> created by <span> Group 9 </span> | all rights reserved!</div>
 
 </section>
 </body>

@@ -83,34 +83,47 @@ span.psw {
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('DBconnect.php');
-    
+    $email = $_POST['email'];
+    $psw =  $_POST['psw'];
 
-    // Secure password hashing
-    $email = mysqli_real_escape_string($connection, $_POST['email']);
-    $psw = password_hash(mysqli_real_escape_string($connection, $_POST['psw']), PASSWORD_BCRYPT);
-
+    // Check if the user exists
+    $sql = "SELECT * FROM userTable WHERE email='$email'";
+    $result = mysqli_query($connection, $sql);
     // Insert the new user into the database
-    $sql = "INSERT INTO userTable (email, psw) VALUES (?, ?)";
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, "ss", $email, $psw);
-    
-    if (mysqli_stmt_execute($stmt)) {
-        // Get the ID of the newly inserted user
-        $last_id = mysqli_insert_id($connection);
-        $sql = "INSERT INTO cart (userID) VALUES ('$last_id')";
-        $result = mysqli_query($connection, $sql);
+    if ( mysqli_num_rows($result) > 0){
+      $row = mysqli_fetch_assoc($result);
+      $old_psw = $row['psw'];
+      $user_id = $row['id'];
+      // Verify the password
+      if ($old_psw==$psw) {
+            echo "<script>
+                alert('Welcome Back!');
+                window.location.href = 'home.php?id=" . $user_id . "';
+                </script>";
+        } else {
+            echo "<script>
+                alert('Incorrect password!');
+                window.location.href = 'login.php';
+                </script>";
+        }
+  }else{
+    $sql = "INSERT INTO userTable (email, psw) VALUES ('$email', '$psw')";
+    $result = mysqli_query($connection, $sql);
+    $last_id = mysqli_insert_id($connection);
+    $sql = "INSERT INTO cart (userID) VALUES ('$last_id')";
+    $result = mysqli_query($connection, $sql);
+    echo "<script>
+                alert('Welcome!');
+                window.location.href = 'home.php?id=" . $last_id . "';
+                </script>";
 
-        // Redirect to another page with user ID
-        header("Location: home.php?id=" . $last_id);
-        exit();
-    } else {
-        echo "Error: " . mysqli_error($connection);
-    }
-    
-    mysqli_stmt_close($stmt);
-    mysqli_close($connection);
+  }       
 }
 ?>
+
+
+
+
 
 </body>
 </html>

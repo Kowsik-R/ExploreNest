@@ -27,9 +27,8 @@
 
 <?php
   include 'DBconnect.php';
-  $conn = mysqli_connect('localhost', 'root', '', 'ExploreNest1');
   $sql = "SELECT * FROM carRental a,package p where a.product_code=p.product_code;";
-  $result = mysqli_query($conn, $sql);
+  $result = mysqli_query($connection, $sql);
   while ($row = mysqli_fetch_assoc($result)):
 ?>
 
@@ -44,15 +43,10 @@
         <h3><i class="fas fa-dollar-sign"></i><?= $row['product_price'] ?></h3>
         <form action="" method="post" class="addItem">
           <input type="hidden" name="pcode" value="<?= $row['product_code'] ?>">
-          <p>Date:</p>
-          <input type="date" name="slots" value="<?= $row['slots'] ?>"><br>
-          <select name="carType" class="form-control">
-              <option value="" selected disabled>-Select Car Type-</option>
-              <option value="12 seater">12 Seater</option>
-              <option value="4 seater">4 Seater</option>
-              <option value="suv">SUV</option>
-              <option value="jeep">Jeep</option>
-            </select>
+          <p>Pick-up Date:</p>
+          <input type="date" name="arrival" required>
+          <p>Return Date:</p>
+          <input type="date" name="leaving" required><br>
           <h3><?= $row['loc'] ?></h3>
           <input type="submit" value="Add to the cart" class="btn" name="addItem">
         </form>
@@ -75,81 +69,75 @@ if (!$connection) {
 // Add products into the cart table
 if (isset($_POST['addItem'])) {
     $user_id = $_GET['id']; 
-    $car_type = $_POST['carType'];
     $pcode = $_POST['pcode'];
-    $slots = $_POST['slots'];
+    $leaving= $_POST['leaving'];
+    $arrival = $_POST['arrival'];
+    $qty = 0;
     $flag = True;
-    $c = 0;
 
-    $sql = "SELECT * FROM carType WHERE product_code='$pcode' and car_type='$car_type'";
+    $start_date = strtotime($arrival);
+    $end_date = strtotime($leaving);
+    $dates_array = array();
+
+    while ($start_date <= $end_date) {
+        $dates_array[] = date("m-d-Y", $start_date);
+        $start_date = strtotime("+1 day", $start_date);
+        $qty++;
+    }
+
+    $sql = "SELECT slots FROM package WHERE product_code='$pcode'";
     $result = mysqli_query($connection, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $clash_dates = array(); //dates which clashes with the existing dates
 
-    if ($result && mysqli_num_rows($result) > 0) {
-    // Check if the product already exists in the activity table
-      $sql = "SELECT slots FROM package WHERE product_code='$pcode'";
-      $result = mysqli_query($connection, $sql);
-      
+    foreach ($dates_array as $i){
       if ($result && mysqli_num_rows($result) > 0) {
-          $row = mysqli_fetch_assoc($result);
-          if ($row['slots'] != "") {
-              // Handle slot availability 
-              $existing_slots = $row['slots'];
-              $slot_array = explode(',', $existing_slots);
-
-              foreach ($slot_array as $i) {
-                  if ($i==$slots) {
-                      $c++;
-                  } 
-              }
-              if ($c >= 5) {
-                  $flag = False;
-              } 
-          }
+            $c=0;
+            if ($row['slots'] != "") {
+                // Handle slot availability 
+                $existing_slots = $row['slots'];
+                $slot_array = explode(',', $existing_slots);
+  
+                foreach ($slot_array as $j) {
+                    if ($j==$i) {
+                        $c++;
+                    } 
+                }
+                if ($c >= 5) {
+                    $flag = False;
+                    array_push($clash_dates, $i); 
+                } 
+            }
         }
-  }else{
-      $flag = False;
-      echo "<script>
-      alert('Car type for this car model not available!');
-      window.location.href = 'car_rental.php?id=" . urlencode($user_id) . "';
-      </script>";
-
-  }
+    } 
 
 
   // If slot update was successful and there are available slots, add product to cart
   if ($flag) {
+
       $sql = "SELECT id FROM cart WHERE userID='$user_id'";
       $result = mysqli_query($connection, $sql);
       $row = mysqli_fetch_assoc($result);
       $cart_id = $row['id'];
 
-      $sql = "SELECT product_code FROM added_to WHERE product_code='$pcode' and cartId='$cart_id'";
+      $sql = "SELECT product_code FROM added_to WHERE product_code='$pcode' and cartID='$cart_id'";
       $result = mysqli_query($connection, $sql);
+
+      $slots = implode(',', $dates_array);
+
       if (mysqli_num_rows($result) > 0) {
         echo "<script>
         alert('Already in the Cart!');
-        window.location.href = 'car_rental.php?id=" . urlencode($user_id) . "';
+        window.location.href = 'car_rental.php?id=" . $user_id . "';
         </script>";
       } else {
-        if ($row['slots'] == "") {
-          // If no slots are set, update the slots column
-          $sql = "UPDATE package SET slots='$slots' WHERE product_code='$pcode'";
-          mysqli_query($connection, $sql);
-        }else {
-          // If slots are set, add the new slot date
-          $updated_slots = $row['slots'].',' .$slots;
-          $sql = "UPDATE package SET slots='$updated_slots' WHERE product_code='$pcode'";
-          mysqli_query($connection, $sql);
-        }
-
-        $sql = "INSERT INTO added_to (cartID,product_code) VALUES ('$cart_id','$pcode')";
+        $sql = "INSERT INTO added_to (cartID,product_code,qty,dates) VALUES ('$cart_id','$pcode','$qty','$slots')";
         $result = mysqli_query($connection, $sql);
-        echo "hbdchubcuh";
 
         if ($result) {
           echo "<script>
           alert('Product added to the cart!');
-          window.location.href = 'car_rental.php?id=" . urlencode($user_id) . "';
+          window.location.href = 'car_rental.php?id=" . $user_id . "';
           </script>";
         } else {
           echo "<script>
@@ -159,13 +147,15 @@ if (isset($_POST['addItem'])) {
         }
       }
   } else {
-      echo "<script>
-      alert('Product not added due to slot availability!');
-      window.location.href = 'hotel.php?id=" . urlencode($user_id) . "';
-      </script>";
+
+    $clash_dates = implode(',', $clash_dates);
+    echo "<script>
+    alert('Sorry, product cannot be added due to slot unavailability on $clash_dates!');
+    window.location.href = 'car_rental.php?id=" . $user_id . "';
+    </script>";
   }
  }
-mysqli_close($connection);  // Close the connection after done
+mysqli_close($connection);  
 ?>
 
 <!-- car PHP section ends -->

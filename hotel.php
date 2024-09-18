@@ -25,7 +25,6 @@
 <!-- hotel section starts --> 
 <?php
   include 'DBconnect.php';
-  $connection = mysqli_connect('localhost', 'root', '', 'ExploreNest1');
   $sql = "SELECT * FROM hotel h,package p where h.product_code=p.product_code;";
   $result = mysqli_query($connection, $sql);
   while ($row = mysqli_fetch_assoc($result)):
@@ -43,9 +42,9 @@
         <form action="" method="post" class="addItem">
           <input type="hidden" name="pcode" value="<?= $row['product_code'] ?>">
           <p>Check-In:</p>
-          <input type="date" name="arrival" value="<?= $row['arrival'] ?>">
+          <input type="date" name="arrival" required>
           <p>Check-Out:</p>
-          <input type="date" name="leaving" value="<?= $row['leaving'] ?>">
+          <input type="date" name="leaving" required>
           <h3><?= $row['loc'] ?></h3>
           <input type="submit" value="Add to the cart" class="btn" name="addItem">
         </form>
@@ -61,9 +60,7 @@
 
 <?php
 
-session_start();
-
-$connection = mysqli_connect('localhost', 'root', '', 'ExploreNest1');
+require 'DBconnect.php';
 
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
@@ -83,7 +80,7 @@ if (isset($_POST['addItem'])) {
     $end_date = strtotime($leaving);
     $dates_array = array();
 
-    while ($start_date <= $end_date) {
+    while ($start_date < $end_date) {
         $dates_array[] = date("m-d-Y", $start_date);
         $start_date = strtotime("+1 day", $start_date);
         $qty++;
@@ -91,10 +88,11 @@ if (isset($_POST['addItem'])) {
 
     $sql = "SELECT slots FROM package WHERE product_code='$pcode'";
     $result = mysqli_query($connection, $sql);
-    
+    $row = mysqli_fetch_assoc($result);
+    $clash_dates = array(); //dates which clashes with the existing dates
+
     foreach ($dates_array as $i){
       if ($result && mysqli_num_rows($result) > 0) {
-          $row = mysqli_fetch_assoc($result);
           $c=0;
           if ($row['slots'] != "") {
               // Handle slot availability 
@@ -108,7 +106,7 @@ if (isset($_POST['addItem'])) {
               }
               if ($c >= 5) {
                   $flag = False;
-                  break;
+                  array_push($clash_dates, $i);
               } 
           }
       }
@@ -122,38 +120,24 @@ if (isset($_POST['addItem'])) {
         $cart_id = $row['id'];
 
 
-        $sql = "SELECT product_code FROM added_to WHERE product_code='$pcode' and cartId='$cart_id'";
+        $sql = "SELECT product_code FROM added_to WHERE product_code='$pcode' and cartID='$cart_id'";
         $result = mysqli_query($connection, $sql);
         $slots = implode(',', $dates_array);
         
         if (mysqli_num_rows($result) > 0) {
-          $user_id = htmlspecialchars($user_id); // Ensure user_id is properly sanitized
           echo "<script>
           alert('Already in the Cart!');
-          window.location.href = 'hotel.php?id=" . urlencode($user_id) . "';
+          window.location.href = 'hotel.php?id=" .$user_id. "';
           </script>";
         } else {
-          if ($row['slots'] == "") {
-            // If no slots are set, update the slots column
-            $sql = "UPDATE package SET slots='$slots' WHERE product_code='$pcode'";
-            mysqli_query($connection, $sql);
-          }else {
-            // If slots are set, add the new slot date
-            $updated_slots = $row['slots'].',' .$slots;
-            $sql = "UPDATE package SET slots='$updated_slots' WHERE product_code='$pcode'";
-            mysqli_query($connection, $sql);
-          }
-  
 
-
-          $sql = "INSERT INTO added_to (cartID,product_code,qty) VALUES ('$cart_id','$pcode','$qty')";
+          $sql = "INSERT INTO added_to (cartID,product_code,qty,dates) VALUES ('$cart_id','$pcode','$qty','$slots')";
           $result = mysqli_query($connection, $sql);
-          echo "hbdchubcuh";
 
           if ($result) {
             echo "<script>
             alert('Product added to the cart!');
-            window.location.href = 'hotel.php?id=" . urlencode($user_id) . "';
+            window.location.href = 'hotel.php?id=" . $user_id . "';
             </script>";
           } else {
             echo "<script>
@@ -163,14 +147,15 @@ if (isset($_POST['addItem'])) {
           }
         }
     } else {
-        echo "<script>
-        alert('Product not added due to slot availability!');
-        window.location.href = 'hotel.php?id=" . urlencode($user_id) . "';
-        </script>";
+      $clash_dates = implode(',', $clash_dates);
+      echo "<script>
+      alert('Sorry, product cannot be added due to slot unavailability on $clash_dates!');
+      window.location.href = 'hotel.php?id=" . $user_id . "';
+      </script>";
     }
 }
 
-mysqli_close($connection);  // Close the connection after done
+mysqli_close($connection);  
 ?>
 
 <!-- hotel PHP section ends -->

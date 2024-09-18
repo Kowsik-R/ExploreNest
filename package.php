@@ -40,7 +40,7 @@
         <form action="" method="post" class="addItem">
           <input type="hidden" name="pcode" value="<?= $row['product_code'] ?>">
           <p>Check-In:</p>
-          <input type="date" name="arrival">
+          <input type="date" name="arrival" required>
           <h3><?= $row['loc'] ?></h3>
           <h3><?= $row['nights'] ?><h3>Nights</h3></h3>
           <input type="submit" value="Add to the cart" class="btn" name="addItem">
@@ -85,10 +85,11 @@ if (isset($_POST['addItem'])) {
 
   $sql = "SELECT slots FROM package WHERE product_code='$pcode'";
   $result = mysqli_query($connection, $sql);
+  $row = mysqli_fetch_assoc($result);
+  $clash_dates = array(); //dates which clashes with the existing dates
 
   foreach ($dates_array as $i){
     if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
         $c=0;
         if ($row['slots'] != "") {
             // Handle slot availability 
@@ -101,8 +102,8 @@ if (isset($_POST['addItem'])) {
                 } 
             }
             if ($c >= 5) {
-                $flag = False;
-                break;
+              $flag = False;
+              array_push($clash_dates, $i);
             } 
         }
     }
@@ -120,28 +121,16 @@ if (isset($_POST['addItem'])) {
       $sql = "SELECT product_code FROM added_to WHERE product_code='$pcode' and cartId='$cart_id'";
       $result = mysqli_query($connection, $sql);
       $slots = implode(',', $dates_array);
+      
       if (mysqli_num_rows($result) > 0) {
-        $user_id = htmlspecialchars($user_id); // Ensure user_id is properly sanitized
         echo "<script>
         alert('Already in the Cart!');
         window.location.href = 'package.php?id=" . $user_id . "';
         </script>";
       } else {
-        if ($row['slots'] == "") {
-          // If no slots are set, update the slots column
-          $sql = "UPDATE package SET slots='$slots' WHERE product_code='$pcode'";
-          mysqli_query($connection, $sql);
-        }else {
-          // If slots are set, add the new slot date
-          $updated_slots = $row['slots'].',' .$slots;
-          $sql = "UPDATE package SET slots='$updated_slots' WHERE product_code='$pcode'";
-          mysqli_query($connection, $sql);
-        }
-
-
-        $sql = "INSERT INTO added_to (cartID,product_code) VALUES ('$cart_id','$pcode')";
+ 
+        $sql = "INSERT INTO added_to (cartID,product_code,dates) VALUES ('$cart_id','$pcode','$slots')";
         $result = mysqli_query($connection, $sql);
-        echo "hbdchubcuh";
 
         if ($result) {
           echo "<script>
@@ -156,10 +145,11 @@ if (isset($_POST['addItem'])) {
         }
       }
   } else {
-      echo "<script>
-      alert('Product not added due to slot availability!');
-      window.location.href = 'package.php?id=" . $user_id . "';
-      </script>";
+    $clash_dates = implode(',', $clash_dates);
+    echo "<script>
+    alert('Sorry, product cannot be added due to slot unavailability on $clash_dates!');
+    window.location.href = 'package.php?id=" . $user_id . "';
+    </script>";
   }
 }
 

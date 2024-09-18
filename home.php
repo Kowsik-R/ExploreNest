@@ -163,19 +163,19 @@
         <div class="box">
 
             <div class="image">
-                <img src="pic/pic10.jpg" alt=""> <!-- photo ########-->
+                <img src="pic/pic10.jpg" alt=""> 
             </div>
             <h3>adventure & tour</h3>
-            <a href="book.php" class="btn">book now</a>
+            <a href="package.php" class="btn">book now</a>
 
         </div>
         <div class="box">
 
             <div class="image">
-                <img src="pic/pic11.jpg" alt=""> <!-- photo ########-->
+                <img src="pic/pic11.jpg" alt=""> 
             </div>
             <h3>adventure & tour</h3>
-            <a href="book.php" class="btn">book now</a>
+            <a href="package.php" class="btn">book now</a>
             
         </div>
     </div>

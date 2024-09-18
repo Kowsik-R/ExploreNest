@@ -30,8 +30,6 @@
     </div>
 
     <div class="content">
-        <h3>why choose us?</h3>
-        <p>balh balh</p> <!-- edit ########-->
         <div class="icon-container">
             <i class="fas fa-map"></i>
             <span>top destinations</span>
@@ -81,7 +79,6 @@ if (isset($_POST['add-review'])) {
     $comment = $_POST['comment'];
     $user_id = $_GET['id'];
 
-    // Using prepared statements for security
     $sql = "INSERT INTO review (userID, name, star, comment) VALUES ('$user_id','$name', '$star', '$comment')";
     $result = mysqli_query($connection, $sql);
 
@@ -89,7 +86,7 @@ if (isset($_POST['add-review'])) {
     if ($result) {
         echo "<script>
             alert('Review added successfully!');
-            window.location.href = 'about.php';
+            window.location.href = 'about.php?id=" . $user_id . "';
             </script>";
     } else {
         echo "Error: ";
@@ -102,8 +99,7 @@ mysqli_close($connection);
 <h1 style="font-size: 5rem; text-align: center;">Reviews</h1>
 
 <?php
-$connection = mysqli_connect('localhost', 'root', '', 'ExploreNest1');
-
+require 'DBconnect.php';
 $sql = "SELECT * FROM review";
 $result = mysqli_query($connection, $sql);
 

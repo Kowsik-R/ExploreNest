@@ -42,21 +42,17 @@
       <th style="padding-right: 20px;">Name</th>
       <th style="padding-right: 20px;">Location</th>
       <th style="padding-right: 20px;">Price</th>
-      <th style="padding-right: 20px;">
-      </th>
-    </tr>
+      <th style="padding-right: 20px;"></th>
+      <th>
+        <a href="action.php?clear=<?php echo $_GET['id']; ?>" class="badge-danger badge p-1" onclick="return confirm('Are you sure want to clear your cart?');"><i class="fas fa-trash"></i>&nbsp;&nbsp;Clear Cart</a>
+      </tr>
 
     </thead>
     <tbody>
-              <?php
+            <?php
                 require 'DBconnect.php';
                 $user_id=$_GET['id'];
-                $sql ="SELECT id FROM cart where userID='$user_id'";
-                $result = mysqli_query($connection, $sql);
-                $row = mysqli_fetch_assoc($result);
-                $cartID = $row['id'];
-
-                $sql = "SELECT * FROM added_to where cartID='$cartID'";
+                $sql = "SELECT * FROM added_to WHERE cartID = (SELECT id FROM cart WHERE userID = '$user_id')";
                 $result = mysqli_query($connection, $sql);
                 $grand_total = 0;
                 if ($result) {
@@ -68,10 +64,7 @@
                       $result1 = mysqli_query($connection, $sql);
 
                       while ($row1 = mysqli_fetch_assoc($result1)){
-                        $product_image = $row1['product_image'];
-                        $product_name = $row1['product_name'];
                         $product_price = $row1['product_price'];
-                        $loc = $row1['loc'];
                         $total_price = $product_price * $qty;
                         $grand_total += $total_price;       
               ?>
@@ -104,7 +97,20 @@
                 <td colspan="2"><b>Grand Total</b></td>
                 <td><b><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;<?= $grand_total ?></b></td>
                 <td>
-                  <a href="book.php?id=<?$user_id ?>&amount=<?$grand_total?>" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Checkout</a>
+                <?php 
+                  $flag = true;
+                  if ($grand_total == 0) {
+                      $flag = false;
+                  }
+                  if ($flag) {
+                      ?>
+                      <a href="book.php?id=<?= $user_id ?>&amount=<?= $grand_total ?>" class="btn btn-info">
+                          <i class="far fa-credit-card"></i>&nbsp;&nbsp;Checkout
+                      </a>
+                  <?php 
+                  } 
+                  ?>
+
                 </td>
               </tr>
     </tbody>

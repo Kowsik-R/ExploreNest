@@ -9,7 +9,7 @@
 <section class="header">
     <a href="home.php" class="logo">ExploreNest</a>
     <nav class="navbar">
-        <a href="home.php">home</a>
+        <a href="home.php?id=<?php echo $_GET['id']; ?>">home</a>
         <a href="about.php?id=<?php echo $_GET['id']; ?>">about</a>
         <a href="package.php?id=<?php echo $_GET['id']; ?>">package</a>
         <li class="dropdown">
