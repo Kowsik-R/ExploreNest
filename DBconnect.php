@@ -3,7 +3,7 @@
 $servername = 'localhost';
 $username = 'root';
 $password = '';
-$dbname = 'ExploreNest1';
+$dbname = 'ExploreNest';
 
 // creating connection
 $connection = new mysqli($servername, $username, $password);
