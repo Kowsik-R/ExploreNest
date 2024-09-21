@@ -14,7 +14,7 @@ if(isset($_POST['product_id'])){
     $product_type = $product_code[0];
      // Determine product table name based on product type
         $product_table = [  //dictonary
-            'a' => 'activity',
+            'a' => 'activity', //key(code) : value(table name)
             'p' => 'premade',
             't' => 'tourGuide',
             'h' => 'hotel',

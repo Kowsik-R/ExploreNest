@@ -1,0 +1,75 @@
+insert into package VALUES
+("h1000","Hotel Arina",100,"pic/hotel2.jpg","Malaysia",""),
+("h1001","Hotel Long Beach",150,"pic/hotel3.jpg","Malaysia",""),
+("h1002","Hotel Saymon",80,"pic/h2.jpg","Indonesia",""),
+("h1003","Hotel Paradise",150,"pic/h3.jpg","Italy",""),
+("h1004","Hotel Seagul",50,"pic/h4.jpg","Indonesia",""),
+("h1005","Hotel Marina",200,"pic/h5.jpg","Italy",""),
+("h1006","Hotel Marmaid",100,"pic/h6.jpg","Maldives",""),
+("h1007","Hotel Sea Palace",120,"pic/h7.jpg","Malaysia",""),
+("h1008","Hotel Baywatch",200,"pic/h8.jpg","Maldives",""),
+("a1000","Boat riding",50,"pic/boat riding.jpg","Malaysia",""),
+("a1001","Scuba diving",10,"pic/scuba diving.jpg","Indonesia",""),
+("a1002","Camping",20,"pic/camping.jpg","Italy",""),
+("a1003","hiking",30,"pic//hikking.jpg","Italy",""),
+("a1004","parasailing",15,"pic/parasailing.jpg","Indonesia",""),
+("a1005","surfing",15,"pic/surfing.jpg","Maldives",""),
+("t1000","Adam",150,"pic/tg2.jpg","Italy",""),
+("t1001","Roshni",120,"pic/tg3.jpg","Malaysia",""),
+("t1002","David",100,"pic/tg4.jpg","Maldives",""),
+("t1003","Leona",150,"pic/tg1.jpg","Italy",""),
+("p1000","Bali & Beyond Adventure",2000,"pic/pic10.jpg","Indonesia",""),
+("p1001","Indonesian Island Getaway",2500,"pic/pic11.jpg","Indonesia",""),
+("p1002","Malaysia Highlights",4000,"pic/pic12.jpg","Malaysia",""),
+("p1003","Rome & Florence Explorer",5000,"pic/pic13.jpg","Italy",""),
+("p1004","Discover Malaysia",2500,"pic/pic14.jpg","Malaysia",""),
+("p1005","Best of Northern Italy",4500,"pic/pic15.jpg","Italy",""),
+("p1006","Maldives Dream Escape",6500,"pic/pic16.jpg","Maldives",""),
+("p1007","Venice & Amalfi Coast",7500,"pic/pic17.jpg","Italy",""),
+("p1008","Tropical Escape: Maldives All-Inclusive",8000,"pic/pic21.jpg","Maldives",""),
+("c1000","Toyota",100,"pic/toyota-car.jpg","Indonesia",""),
+("c1001","hyundai",120,"pic/hyundai-car.jpg","Malaysia",""),
+("c1002","mercedes",150,"pic/mercedes-car.jpg","Maldives",""),
+("c1003","tesla",200,"pic/tesla-suv.jpg","Italy","");
+
+insert into carRental VALUES
+("c1000","toyota"),
+("c1001","hyundai"),
+("c1002","mercedes"),
+("c1003","tesla");
+
+insert into hotel VALUES
+("h1000"),
+("h1001"),
+("h1002"),
+("h1003"),
+("h1004"),
+("h1005"),
+("h1006"),
+("h1007"),
+("h1008");
+
+insert into activity VALUES
+("a1000"),
+("a1001"),
+("a1002"),
+("a1003"),
+("a1004"),
+("a1005");
+
+insert into tourGuide VALUES
+("t1000"),
+("t1001"),
+("t1002"),
+("t1003");
+
+insert into premade VALUES
+("p1000",6),
+("p1001",4),
+("p1002",4),
+("p1003",6),
+("p1004",6),
+("p1005",6),
+("p1006",6),
+("p1007",4),
+("p1008",6);

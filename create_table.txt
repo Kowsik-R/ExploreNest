@@ -1,0 +1,90 @@
+create TABLE userTable(
+    id int AUTO_INCREMENT PRIMARY key,
+    email varchar(255),
+    psw varchar(255)
+    );
+
+create table package(
+    product_code varchar(255) PRIMARY key,
+    product_name text(255),
+    product_price int,
+    product_image varchar(255),
+    loc varchar(255),
+    slots text
+    );
+
+CREATE table orderTable(
+    id int AUTO_INCREMENT PRIMARY key,
+    email varchar(255),
+    address varchar(255),
+    amount int,
+    firstName varchar(255),
+    lastName varchar(255),
+    phone int(12),
+    payment_mode varchar(255),
+    userID int,
+    FOREIGN key (userID) REFERENCES userTable(id)
+    );
+
+CREATE table product_details(
+    productCode varchar(255),
+    orderID int,
+    dates varchar(1000),
+    PRIMARY key(orderID,productCode,dates),
+    FOREIGN key (orderID) REFERENCES orderTable(id)
+    );
+
+create table carRental(
+    product_code varchar(255),
+    car_model varchar(255),
+    PRIMARY key (product_code),
+    FOREIGN key (product_code) REFERENCES package(product_code)
+    );
+
+create table hotel(
+    product_code varchar(255) PRIMARY key,
+    FOREIGN KEY (product_code) REFERENCES package(product_code)
+    );
+
+create table activity(
+    product_code varchar(255) PRIMARY key,
+    FOREIGN KEY (product_code) REFERENCES package(product_code)
+    );
+
+create table premade(
+    product_code varchar(255) PRIMARY key,
+    FOREIGN KEY (product_code) REFERENCES package(product_code),
+    nights int
+    );
+
+create table tourGuide(
+    product_code varchar(255) PRIMARY key,
+    FOREIGN KEY (product_code) REFERENCES package(product_code)
+    );
+
+create table review(
+    userID int,
+    name varchar(255),
+    star int(5),
+    comment varchar(1000),
+    Primary key (userID, name),
+    
+    FOREIGN KEY (userID) REFERENCES userTable(id)
+
+    );
+
+create table cart( 
+    id int AUTO_INCREMENT PRIMARY key,
+    userID int,
+    FOREIGN KEY (userID) REFERENCES userTable(id)
+    );
+
+CREATE TABLE added_to (
+    qty int (100) DEFAULT 1,
+    cartID int,
+    product_code varchar(255),
+    dates varchar(1000),
+    PRIMARY KEY (cartID, product_code),
+    FOREIGN KEY (product_code) REFERENCES package(product_code),
+    FOREIGN KEY (cartID) REFERENCES cart(id)
+);

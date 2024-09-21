@@ -21,9 +21,13 @@
                 <a href="activity.php?id=<?php echo $_GET['id']; ?>">activities</a>
             </div>
         </li>
-        <a href="#"><i class="fa fa-search"></i></a>
+        <form action="search.php" method="GET" name="s">
+            <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
+            <input type="text" name="query" placeholder="Search...">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
         <a class="nav-link" href="cart.php?id=<?php echo $_GET['id']; ?>"><i class="fas fa-shopping-cart"></i> <span id="cart-item" class="badge badge-danger"></span></a>
-
+</nav>
 </section>
 </body>
 </html>
