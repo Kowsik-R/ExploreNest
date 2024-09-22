@@ -73,7 +73,7 @@
 <?php
 require 'DBconnect.php';
 
-if (isset($_POST['add-review'])) {
+if (isset($_POST['add-review'])) { //form (class)
     $name = $_POST['name'];
     $star = $_POST['star'];
     $comment = $_POST['comment'];

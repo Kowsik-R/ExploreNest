@@ -24,7 +24,6 @@
 <div class="heading" style="background:url(pic/car-header-pic.jpg) no-repeat"> 
     <h1> car rental </h1>
 </div>
-
 <?php
   include 'DBconnect.php';
   $sql = "SELECT * FROM carRental a,package p where a.product_code=p.product_code;";

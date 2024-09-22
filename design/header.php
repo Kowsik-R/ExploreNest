@@ -7,7 +7,7 @@
 </head>
 <body>
 <section class="header">
-    <a href="home.php" class="logo">ExploreNest</a>
+    <a href="home.php?id=<?php echo $_GET['id']; ?>" class="logo">ExploreNest</a>
     <nav class="navbar">
         <a href="home.php?id=<?php echo $_GET['id']; ?>">home</a>
         <a href="about.php?id=<?php echo $_GET['id']; ?>">about</a>
@@ -21,11 +21,11 @@
                 <a href="activity.php?id=<?php echo $_GET['id']; ?>">activities</a>
             </div>
         </li>
-        <form action="search.php" method="GET" name="s">
+        <form action="search.php" method="GET" style='color:#8e44ad; text-align:center;'>
             <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
             <input type="text" name="query" placeholder="Search...">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+            <input type="submit" value="Search" class="btn" name="cs"><i class="fa fa-search"></i>
+</form>
         <a class="nav-link" href="cart.php?id=<?php echo $_GET['id']; ?>"><i class="fas fa-shopping-cart"></i> <span id="cart-item" class="badge badge-danger"></span></a>
 </nav>
 </section>

@@ -57,13 +57,12 @@
 <?php
 require 'DBconnect.php';
 
-// Add products into the cart table
+// Add products into the added_to table
 if (isset($_POST['addItem'])) {
     $user_id = $_GET['id']; 
     $pcode = $_POST['pcode'];
     $slots = $_POST['slots'];
     $flag = True;
-    $c = 0;
 
     //cart Id 
     $sql = "SELECT id FROM cart WHERE userID='$user_id'";
@@ -83,15 +82,13 @@ if (isset($_POST['addItem'])) {
     } else{
       $sql = "SELECT slots FROM package WHERE product_code='$pcode'";
       $result = mysqli_query($connection, $sql);
-
+      $row = mysqli_fetch_assoc($result);
        // Handle slot availability 
       if ($result && mysqli_num_rows($result) > 0) {
-          $row = mysqli_fetch_assoc($result);
-          if ($row['slots'] != "") {
-            
+          if ($row['slots'] != "") {   
               $existing_slots = $row['slots'];
               $slot_array = explode(',', $existing_slots);
-
+              $c = 0;
               foreach ($slot_array as $i) {
                   if ($i==$slots) {
                       $c++;
@@ -103,7 +100,7 @@ if (isset($_POST['addItem'])) {
           }
       } 
 
-    // If slot update was successful and there are available slots, add product to cart
+    // If there are available slots, add product to cart
     if ($flag) {
 
       $sql = "INSERT INTO added_to (cartID,product_code,dates) VALUES ('$cart_id','$pcode','$slots')";

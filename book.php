@@ -19,6 +19,8 @@
 <!-- booking section starts -->
 <?php
 require 'DBconnect.php';
+
+//Discount
 if (isset($_GET['id']) && isset($_GET['amount'])) {
     $user_id = $_GET['id'];
     $amount = $_GET['amount']; 
